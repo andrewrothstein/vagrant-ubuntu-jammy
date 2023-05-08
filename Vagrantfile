@@ -10,19 +10,15 @@ Vagrant.configure(2) do |config|
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
 
-  $num_instances = 1
+  $num_instances = 3
   $os = "ubuntu"
-  $osver = "jammy"
-
-  $tld = "vagrant.test"
-  config.dns.tld = $tld
+  $osver = "jammy64"
+  config.dns.tld = "vagrant.test"
 
   (1..$num_instances).each do |i|
-    config.vm.define vm_name = "#{$os}-#{$osver}-#{i}.#{$tld}" do |config|
+    config.vm.define vm_name = "#{$os}-#{$osver}-#{i}" do |config|
       config.vm.hostname = vm_name
-      config.vm.box = "#{$os}/#{$osver}64"
-      config.vm.network :private_network, type: "dhcp"
-
+      config.vm.box = "#{$os}/#{$osver}"
       config.vm.provision "shell" do |s|
         ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
         s.inline = <<-SHELL
